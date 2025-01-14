@@ -17,9 +17,10 @@ logs/
 jspm_packages/
 bower_components/
 
-# Build directories
+# Build and output directories
 dist/
 build/
+output/
 
 # IDEs and editors
 .vscode/
@@ -37,3 +38,4 @@ Thumbs.db
 *.exe
 *.out
 *.app
+

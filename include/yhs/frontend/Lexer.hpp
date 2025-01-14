@@ -2,6 +2,7 @@
 #include <string>
 #include <deque>
 #include <functional>
+#include <yhs/Result.hpp>
 
 namespace yhs {
     namespace frontend {
@@ -12,8 +13,12 @@ namespace yhs {
             BinaryOperator, // 2
             Equals, // 3
             Identifier, // 4
-            Number // 5
+            Int, // 5
+            Var, // 6
+            Const, // 7
+            EOF_ // 8
         };
+
 
         struct Token {
             Token(const std::string& value, TokenType type) : value(value), type(type) {}
@@ -25,7 +30,14 @@ namespace yhs {
         public:
             Lexer() {}
 
-            void tokenize(const std::string& source);
+            Result<std::deque<Token>> tokenize(const std::string& source);
+
+        
+        std::unordered_map<std::string, Lexer::TokenType> reserved {
+            {"var", Lexer::TokenType::Var},
+            {"const", Lexer::TokenType::Const}
+        };
+
         };
     }
 }

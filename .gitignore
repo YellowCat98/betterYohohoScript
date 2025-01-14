@@ -20,7 +20,7 @@ bower_components/
 # Build and output directories
 dist/
 build/
-output/
+.output/
 
 # IDEs and editors
 .vscode/

@@ -13,7 +13,7 @@ namespace yhs {
 
             Lexer::Token at();
             Lexer::Token eat();
-            Lexer::Token expect();
+            Lexer::Token expect(Lexer::TokenType type, const std::string& err);
             bool notEOF();
 
             AST::Stmt parseStmt();

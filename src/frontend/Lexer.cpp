@@ -5,7 +5,6 @@
 using namespace yhs::frontend;
 
 std::deque<Lexer::Token> Lexer::tokenize(const std::string& source) {
-	std::cout << "tokenizing thing " << source << std::endl;
 	std::deque<std::string> src;
 	for (char ch : source) {
 		src.push_back(std::string(1, ch));

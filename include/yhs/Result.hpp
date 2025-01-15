@@ -22,6 +22,9 @@ namespace yhs {
             }
             return *value;
         }
+        std::string getErr() {
+            return *err;
+        }
         bool isOk() const {
             return ok;
         }

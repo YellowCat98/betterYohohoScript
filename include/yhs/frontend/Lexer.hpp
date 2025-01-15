@@ -7,6 +7,7 @@
 namespace yhs {
     namespace frontend {
         class Lexer {
+        public:
         enum class TokenType {
             OpenParen, // 0
             CloseParen, // 1
@@ -28,10 +29,9 @@ namespace yhs {
         };
         
 
-        public:
             Lexer() {}
 
-            Result<std::deque<Token>> tokenize(const std::string& source);
+            std::deque<Token> tokenize(const std::string& source);
 
         
         std::unordered_map<std::string, Lexer::TokenType> reserved {

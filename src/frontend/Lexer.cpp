@@ -4,7 +4,7 @@
 
 using namespace yhs::frontend;
 
-yhs::Result<std::deque<Lexer::Token>> Lexer::tokenize(const std::string& source) {
+std::deque<Lexer::Token> Lexer::tokenize(const std::string& source) {
 	std::cout << "tokenizing thing " << source << std::endl;
 	std::deque<std::string> src;
 	for (char ch : source) {
@@ -54,7 +54,7 @@ yhs::Result<std::deque<Lexer::Token>> Lexer::tokenize(const std::string& source)
 			tokens.push_back(Token(src.front(), TokenType::BinaryOperator));
 			src.pop_front();
 		} else if (src[0] == "=") {
-			tokens.push_back(Token(src.front(), TokenType::BinaryOperator));
+			tokens.push_back(Token(src.front(), TokenType::Equals));
 			src.pop_front();
 		} else if (src[0] == ";") {
 			tokens.push_back(Token(src.front(), TokenType::Semicolon));
@@ -82,12 +82,12 @@ yhs::Result<std::deque<Lexer::Token>> Lexer::tokenize(const std::string& source)
 			} else if (src[0] == "" || src[0] == " " || src[0] == "\n" || src[0] == "\r" || src[0] == "\t") {
 				src.pop_front();
 			} else {
-				return Result<std::deque<Token>>::Err("Unrecognized token found.");
+				throw std::runtime_error("Unrecognized token found.");
 			}
 		}
 	}
 
 	tokens.push_back(Token("EOF", TokenType::EOF_));
 
-	return Result<std::deque<Token>>::Ok(tokens);
+	return tokens;
 }

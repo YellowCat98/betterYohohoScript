@@ -4,20 +4,14 @@
 
 int main() {
     auto lexer = yhs::frontend::Lexer();
-    auto res = lexer.tokenize("int myVariable = 42 + (5 + 2 / 2 * 1 % 2); // variable declaration");
-
-    if (res.isOk()) {
-        try {
-            auto tokens = res.unwrap();
-            for (auto& token : tokens) {
-                std::cout << "Token: " << token.value << std::endl;
-            }
-        } catch (std::runtime_error& e) {
-            std::cout << e.what() << std::endl;
+    try {
+        auto tokens = lexer.tokenize("var myVariable = 42 + (5 + 2 / 2 * 1 % 2); // variable declaration");
+        for (auto& token : tokens) {
+            std::cout << "Token: " << token.value << std::endl << "Type: " << static_cast<int>(token.type) << std::endl << std::endl;
         }
-
-    } else {
-        std::cout << "is not ok.";
+    } catch (const std::runtime_error& e) {
+        std::cout << "Err: " << e.what() << std::endl;
     }
+    
     return 0;
 }

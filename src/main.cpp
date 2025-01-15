@@ -4,13 +4,13 @@
 
 int main() {
     auto lexer = yhs::frontend::Lexer();
-    auto res = lexer.tokenize(";");
+    auto res = lexer.tokenize("int myVariable = 42 + (5 + 2 / 2 * 1 % 2); // variable declaration");
 
     if (res.isOk()) {
         try {
             auto tokens = res.unwrap();
             for (auto& token : tokens) {
-                std::cout << token.value << std::endl;
+                std::cout << "Token: " << token.value << std::endl;
             }
         } catch (std::runtime_error& e) {
             std::cout << e.what() << std::endl;

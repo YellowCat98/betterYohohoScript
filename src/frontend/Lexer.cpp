@@ -56,6 +56,9 @@ yhs::Result<std::deque<Lexer::Token>> Lexer::tokenize(const std::string& source)
 		} else if (src[0] == "=") {
 			tokens.push_back(Token(src.front(), TokenType::BinaryOperator));
 			src.pop_front();
+		} else if (src[0] == ";") {
+			tokens.push_back(Token(src.front(), TokenType::Semicolon));
+			src.pop_front();
 		} else {
 			if (std::isdigit(src[0][0])) {
 				std::string num;
@@ -64,7 +67,7 @@ yhs::Result<std::deque<Lexer::Token>> Lexer::tokenize(const std::string& source)
 					src.pop_front();
 				}
 
-				tokens.push_back(Token(src.front(), TokenType::Int));
+				tokens.push_back(Token(num, TokenType::Int));
 			} else if (std::isalpha(src[0][0])) {
 				std::string ident;
 				while (src.size() > 0 && std::isalpha(src[0][0])) {

@@ -16,7 +16,8 @@ namespace yhs {
             Int, // 5
             Var, // 6
             Const, // 7
-            EOF_ // 8
+            Semicolon, // 8
+            EOF_ // 9
         };
 
 

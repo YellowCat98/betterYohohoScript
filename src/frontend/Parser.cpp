@@ -26,39 +26,39 @@ bool Parser::notEOF() {
     return tokens[0].type != Lexer::TokenType::EOF_;
 }
 
-AST::Expr Parser::parseAdditiveExpr() {
+AST::Expr* Parser::parseAdditiveExpr() {
     auto left = parseMultiplicitaveExpr();
 
     while (at().value == "+" || at().value == "-") {
         auto op = eat().value;
         auto right = parseMultiplicitaveExpr();
-        left = AST::BinaryExpr(left, right, op);
+        left = new AST::BinaryExpr(left, right, op);
     }
 
     return left;
 }
 
-AST::Expr Parser::parseMultiplicitaveExpr() {
+AST::Expr* Parser::parseMultiplicitaveExpr() {
     auto left = parsePrimaryExpr();
 
     while (at().value == "/" || at().value == "*" || at().value == "%") {
         auto op = eat().value;
         auto right = parsePrimaryExpr();
-        left = AST::BinaryExpr(left, right, op);
+        left = new AST::BinaryExpr(left, right, op);
     }
 
     return left;
 }
 
-AST::Expr Parser::parsePrimaryExpr() {
+AST::Expr* Parser::parsePrimaryExpr() {
     auto tk = at().type;
 
     switch (tk) {
         case Lexer::TokenType::Identifier: {
-            return AST::Identifier(eat().value);
+            return new AST::Identifier(eat().value);
         }
         case Lexer::TokenType::Int: {
-            return AST::NumericLiteral(std::stoi(eat().value));
+            return new AST::NumericLiteral(std::stoi(eat().value));
         }
         case Lexer::TokenType::OpenParen: {
             eat();
@@ -72,21 +72,21 @@ AST::Expr Parser::parsePrimaryExpr() {
     }
 }
 
-AST::Expr Parser::parseExpr() {
+AST::Expr* Parser::parseExpr() {
     return parseAdditiveExpr();
 }
 
-AST::Stmt Parser::parseStmt() {
+AST::Stmt* Parser::parseStmt() {
     return parseExpr();
 }
 
-AST::Program Parser::produceAST(const std::string& code) {
+AST::Program* Parser::produceAST(const std::string& code) {
     tokens = Lexer().tokenize(code);
 
-    auto program = AST::Program({});
+    auto program = new AST::Program({});
 
     while (notEOF()) {
-        program.body.push_back(parseStmt());
+        program->body.push_back(parseStmt());
     }
 
     return program;

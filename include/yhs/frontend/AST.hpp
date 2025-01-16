@@ -28,12 +28,16 @@ namespace yhs {
             struct Expr : public Stmt {Expr(){}};
 
             struct BinaryExpr : public Expr {
-                BinaryExpr(Expr left, Expr right, const std::string& op) : left(left), right(right), op(op) {
+                BinaryExpr(Expr* left, Expr* right, const std::string& op) : left(left), right(right), op(op) {
                     this->kind = NodeType::BinaryExpr;
                 }
+                ~BinaryExpr() {
+                    delete left;
+                    delete right;
+                }
 
-                Expr left;
-                Expr right;
+                Expr* left;
+                Expr* right;
                 std::string op;
             };
 
@@ -53,10 +57,15 @@ namespace yhs {
             };
 
             struct Program : public Stmt {
-                Program(std::deque<std::variant<Stmt, Expr, BinaryExpr, Identifier, NumericLiteral>> body) : body(body) {
+                Program(std::deque<Stmt*> body) : body(body) {
                     this->kind = NodeType::Program;
                 }
-                std::deque<std::variant<Stmt, Expr, BinaryExpr, Identifier, NumericLiteral>> body;
+                ~Program() {
+                    for (auto& node : body) {
+                        delete node;
+                    }
+                }
+                std::deque<Stmt*> body;
             };
         };
     }

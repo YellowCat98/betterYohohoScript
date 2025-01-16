@@ -3,6 +3,7 @@
 #include <yhs/frontend/AST.hpp>
 #include <yhs/Result.hpp>
 #include <yhs/frontend/Lexer.hpp>
+#include <iostream>
 
 namespace yhs {
     namespace frontend {
@@ -16,13 +17,13 @@ namespace yhs {
             Lexer::Token expect(Lexer::TokenType type, const std::string& err);
             bool notEOF();
 
-            AST::Stmt parseStmt();
-            AST::Expr parseExpr();
-            AST::Expr parseAdditiveExpr();
-            AST::Expr parseMultiplicitaveExpr();
-            AST::Expr parsePrimaryExpr();
+            AST::Stmt* parseStmt();
+            AST::Expr* parseExpr();
+            AST::Expr* parseAdditiveExpr();
+            AST::Expr* parseMultiplicitaveExpr();
+            AST::Expr* parsePrimaryExpr();
         public:
-            AST::Program produceAST(const std::string& code);
+            AST::Program* produceAST(const std::string& code);
 
             Parser() {}
         };

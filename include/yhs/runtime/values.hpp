@@ -9,7 +9,9 @@ namespace yhs {
             values() = delete; // no constructor
         public:
             enum class Type {
-                Number // 0
+                Number, // 0
+                Bool,
+                Null
             };
 
             struct RuntimeVal {
@@ -26,6 +28,14 @@ namespace yhs {
                 }
 
                 int value;
+            };
+
+            struct BoolVal : public RuntimeVal {
+                BoolVal(bool value) : value(value) {
+                    type = values::Type::Bool;
+                }
+
+                bool value;
             };
         };
     }

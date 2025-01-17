@@ -14,11 +14,12 @@ namespace yhs {
             BinaryOperator, // 2
             Equals, // 3
             Identifier, // 4
-            Int, // 5
-            Var, // 6
-            Const, // 7
-            Semicolon, // 8
-            EOF_ // 9
+            Number, // 5
+            Double, // 6
+            Var, // 7
+            Const, // 8
+            Semicolon, // 9
+            EOF_ // 10
         };
 
 

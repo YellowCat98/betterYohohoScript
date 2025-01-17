@@ -57,7 +57,7 @@ AST::Expr* Parser::parsePrimaryExpr() {
         case Lexer::TokenType::Identifier: {
             return new AST::Identifier(eat().value);
         }
-        case Lexer::TokenType::Int: {
+        case Lexer::TokenType::Number: {
             return new AST::NumericLiteral(std::stoi(eat().value));
         }
         case Lexer::TokenType::OpenParen: {

@@ -47,6 +47,7 @@ Environment* Environment::resolve(const std::string& name) {
 Environment* Environment::setupEnv() {
     auto env = new Environment(nullptr);
 
-    env->declareVar("ohioRobtop", new values::NumVal(5), false);
+    env->declareVar("true", new values::BoolVal(true), true);
+    env->declareVar("false", new values::BoolVal(false), true);
     return env;
 }

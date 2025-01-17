@@ -61,12 +61,20 @@ std::deque<Lexer::Token> Lexer::tokenize(const std::string& source) {
 		} else {
 			if (std::isdigit(src[0][0])) {
 				std::string num;
-				while (src.size() > 0 && std::isdigit(src[0][0])) {
+				bool hasDecimal = false;
+				while (src.size() > 0 && std::isdigit(src[0][0]) || src[0] == ".") {
+					if (src[0] == ".") {
+						if (!hasDecimal) {
+							hasDecimal = true;
+						} else {
+							throw std::runtime_error("A number cannot have more than a single decimal.");
+						}
+					}
 					num += src.front();
 					src.pop_front();
 				}
 
-				tokens.push_back(Token(num, TokenType::Int));
+				tokens.push_back(Token(num, hasDecimal ? TokenType::Double : TokenType::Number));
 			} else if (std::isalpha(src[0][0])) {
 				std::string ident;
 				while (src.size() > 0 && std::isalpha(src[0][0])) {

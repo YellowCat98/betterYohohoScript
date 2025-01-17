@@ -6,7 +6,7 @@ using namespace yhs::runtime;
 using namespace yhs::frontend;
 
 values::RuntimeVal* interpreter::evaluate_program(AST::Program* program) {
-    auto lastEvaluated = new values::RuntimeVal();
+    values::RuntimeVal* lastEvaluated = nullptr;
 
     for (auto& stmt : program->body) {
         lastEvaluated = evaluate(stmt);

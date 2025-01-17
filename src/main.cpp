@@ -26,18 +26,16 @@ void testExpr(AST::Stmt* expr) {
 */
 
 int main() {
+    try {
     auto i = yhs::runtime::interpreter();
     auto parser = yhs::frontend::Parser();
-    auto result = i.evaluate(parser.produceAST("5 + 1"));
+    auto result = i.evaluate(parser.produceAST("(25 * 4)+(16 / 2)-(7 * 3) + (100 / 5)"));
     if (result->type == values::Type::Number) {
-        try {
-            std::cout << "Returned value: " << static_cast<values::NumVal*>(result)->value << std::endl;
-        } catch (const std::runtime_error& e) {
+        std::cout << "Returned value: " << static_cast<values::NumVal*>(result)->value << std::endl;
+        } 
+        delete result;
+    } catch (const std::runtime_error& e) {
             std::cout << e.what() << std::endl;
         }
-        
-    }
-    delete result;
-    
     return 0;
 }

@@ -3,6 +3,7 @@
 #include <yhs/frontend/Parser.hpp>
 #include <yhs/runtime/interpreter.hpp>
 #include <yhs/Result.hpp>
+#include <yhs/runtime/Environment.hpp>
 
 using namespace yhs::frontend;
 using namespace yhs::runtime;
@@ -29,7 +30,10 @@ int main() {
     try {
     auto i = yhs::runtime::interpreter();
     auto parser = yhs::frontend::Parser();
-    auto result = i.evaluate(parser.produceAST("(25 * 4)+(16 / 2)-(7 * 3) + (100 / 5)"));
+
+    auto env = Environment::setupEnv();
+
+    auto result = i.evaluate(parser.produceAST("ohioRobtop + 2"), env);
     if (result->type == values::Type::Number) {
         std::cout << "Returned value: " << static_cast<values::NumVal*>(result)->value << std::endl;
         } 

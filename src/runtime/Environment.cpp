@@ -4,7 +4,7 @@
 using namespace yhs::runtime;
 
 values::RuntimeVal* Environment::declareVar(const std::string& name, values::RuntimeVal* value, bool constant) {
-    if (variables.find(name) == variables.end()) {
+    if (variables.find(name) != variables.end()) {
         throw std::runtime_error("Variable " + name + " is already declared.");
     }
 
@@ -38,8 +38,15 @@ Environment* Environment::resolve(const std::string& name) {
     }
 
     if (!parent) {
-        throw std::runtime_error("Cannot resolve variable " + name + "as it was not found.");
+        throw std::runtime_error("Cannot resolve variable " + name + " as it was not found.");
     }
 
     return parent->resolve(name);
+}
+
+Environment* Environment::setupEnv() {
+    auto env = new Environment(nullptr);
+
+    env->declareVar("ohioRobtop", new values::NumVal(5), false);
+    return env;
 }

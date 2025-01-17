@@ -1,7 +1,10 @@
 #pragma once
 
+//#include <yhs/runtime/Environment.hpp>
+
 namespace yhs {
     namespace runtime {
+        class Environment;
         class values {
             values() = delete; // no constructor
         public:

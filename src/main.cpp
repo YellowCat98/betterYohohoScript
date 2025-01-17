@@ -1,9 +1,11 @@
 #include <iostream>
 #include <yhs/frontend/Lexer.hpp>
 #include <yhs/frontend/Parser.hpp>
+#include <yhs/runtime/interpreter.hpp>
 #include <yhs/Result.hpp>
 
 using namespace yhs::frontend;
+using namespace yhs::runtime;
 /*
 void testExpr(AST::Stmt* expr) {
     if (auto* identifier = dynamic_cast<AST::Identifier*>(expr)) {
@@ -24,22 +26,18 @@ void testExpr(AST::Stmt* expr) {
 */
 
 int main() {
-    /*
-    try {
-        auto parser = yhs::frontend::Parser();
-
-        auto program = parser.produceAST("5 + 8 / 2");
-
-        for (auto& node : program->body) {
-            if (node->kind == AST::NodeType::BinaryExpr || node->kind == AST::NodeType::NumericLiteral || node->kind == AST::NodeType::Identifier) {
-                testExpr(node);
-            }
+    auto i = yhs::runtime::interpreter();
+    auto parser = yhs::frontend::Parser();
+    auto result = i.evaluate(parser.produceAST("5 + 1"));
+    if (result->type == values::Type::Number) {
+        try {
+            std::cout << "Returned value: " << static_cast<values::NumVal*>(result)->value << std::endl;
+        } catch (const std::runtime_error& e) {
+            std::cout << e.what() << std::endl;
         }
-
-    } catch (const std::runtime_error& e) {
-        std::cout << "Err: " << e.what() << std::endl;
+        
     }
-    */
+    delete result;
     
     return 0;
 }

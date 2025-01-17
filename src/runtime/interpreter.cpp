@@ -10,7 +10,7 @@ values::RuntimeVal* interpreter::evaluate_program(AST::Program* program) {
 
     for (auto& stmt : program->body) {
         lastEvaluated = evaluate(stmt);
-        delete stmt;
+        //delete stmt;
     }
     delete program;
     return lastEvaluated;
@@ -32,10 +32,10 @@ values::RuntimeVal* interpreter::evaluate_binary_expr(AST::BinaryExpr* binEx) {
     auto lhs = evaluate(binEx->left);
     auto rhs = evaluate(binEx->right);
 
-    delete binEx->left;
-    delete binEx->right;
+    //delete binEx->left;
+    //delete binEx->right;
     
-    if (lhs->type == values::Type::Number && rhs->type == values::Type::Number) return evaluate_numeric_binary_expr(static_cast<values::NumVal*>(lhs), static_cast<values::NumVal*>(lhs), binEx->op);
+    if (lhs->type == values::Type::Number && rhs->type == values::Type::Number) return evaluate_numeric_binary_expr(static_cast<values::NumVal*>(lhs), static_cast<values::NumVal*>(rhs), binEx->op);
 
     throw std::runtime_error("lhs or rhs is not an integer.");
 }
@@ -52,6 +52,9 @@ values::RuntimeVal* interpreter::evaluate(AST::Stmt* stmt) {
         }
         case AST::NodeType::BinaryExpr: {
             return evaluate_binary_expr(static_cast<AST::BinaryExpr*>(stmt));
+        }
+        default: {
+            return new values::RuntimeVal();
         }
     }
 }

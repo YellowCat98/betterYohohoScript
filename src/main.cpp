@@ -31,20 +31,20 @@ int main() {
     auto i = yhs::runtime::interpreter();
     auto parser = yhs::frontend::Parser();
 
-    //auto env = Environment::setupEnv();
+    auto env = Environment::setupEnv();
 
-    auto tokens = yhs::frontend::Lexer().tokenize("2.42 + 2");
-    for (auto& token : tokens) {
-        std::cout << "Token type: " << static_cast<int>(token.type) << std::endl;
-        std::cout << "Token Value: " << token.value << std::endl << std::endl;
-    }
+    //auto tokens = yhs::frontend::Lexer().tokenize("2.42 + 2");
+    //for (auto& token : tokens) {
+    //    std::cout << "Token type: " << static_cast<int>(token.type) << std::endl;
+    //    std::cout << "Token Value: " << token.value << std::endl << std::endl;
+    //}
 
-    //auto result = i.evaluate(parser.produceAST("ohioRobtop + 2"), env);
-    //if (result->type == values::Type::Number) {
-    //    std::cout << "Returned value: " << static_cast<values::NumVal*>(result)->value << std::endl;
-    //} 
-    //delete result;
-    //delete env;
+    auto result = i.evaluate(parser.produceAST("5 / 2"), env);
+    if (result->type == values::Type::Double) {
+        std::cout << "Returned value: " << static_cast<values::DoubleVal*>(result)->value << std::endl;
+    } 
+    delete result;
+    delete env;
     } catch (const std::runtime_error& e) {
             std::cout << e.what() << std::endl;
         }

@@ -1,6 +1,6 @@
 #pragma once
 
-//#include <yhs/runtime/Environment.hpp>
+#include <variant>
 
 namespace yhs {
     namespace runtime {
@@ -10,8 +10,9 @@ namespace yhs {
         public:
             enum class Type {
                 Number, // 0
-                Bool,
-                Null
+                Double, // 1
+                Bool, // 2
+                Null // 3
             };
 
             struct RuntimeVal {
@@ -28,6 +29,14 @@ namespace yhs {
                 }
 
                 int value;
+            };
+
+            struct DoubleVal : public RuntimeVal {
+                DoubleVal(double value) : value(value) {
+                    type = values::Type::Double;
+                }
+
+                double value;
             };
 
             struct BoolVal : public RuntimeVal {

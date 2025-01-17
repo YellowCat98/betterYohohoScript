@@ -13,8 +13,9 @@ namespace yhs {
             enum class NodeType {
                 Program, // 0
                 NumericLiteral, // 1
-                Identifier, // 2
-                BinaryExpr // 3
+                DoubleLiteral, // 2
+                Identifier, // 3
+                BinaryExpr // 4
             };
 
             struct Stmt {
@@ -54,6 +55,14 @@ namespace yhs {
                 }
 
                 int value;
+            };
+
+            struct DoubleLiteral : public Expr {
+                DoubleLiteral(double value) : value(value) {
+                    this->kind = NodeType::DoubleLiteral;
+                }
+
+                double value;
             };
 
             struct Program : public Stmt {

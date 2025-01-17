@@ -60,6 +60,9 @@ AST::Expr* Parser::parsePrimaryExpr() {
         case Lexer::TokenType::Number: {
             return new AST::NumericLiteral(std::stoi(eat().value));
         }
+        case Lexer::TokenType::Double: {
+            return new AST::DoubleLiteral(std::stod(eat().value));
+        }
         case Lexer::TokenType::OpenParen: {
             eat();
             auto value = parseExpr();

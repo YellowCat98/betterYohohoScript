@@ -10,7 +10,7 @@ namespace yhs {
         private:
             values::RuntimeVal* evaluate_program(frontend::AST::Program* program, Environment* env);
 
-            values::NumVal* evaluate_numeric_binary_expr(values::NumVal* lhs, values::NumVal* rhs, const std::string& op);
+            values::DoubleVal* evaluate_numeric_binary_expr(values::RuntimeVal* lhs, values::RuntimeVal* rhs, const std::string& op);
 
             values::RuntimeVal* evaluate_binary_expr(frontend::AST::BinaryExpr* binEx, Environment* env);
 

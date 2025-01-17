@@ -4,7 +4,7 @@ namespace yhs {
     namespace runtime {
         class values {
             values() = delete; // no constructor
-
+        public:
             enum class Type {
                 Number // 0
             };
@@ -18,7 +18,7 @@ namespace yhs {
             
 
             struct NumVal : public RuntimeVal {
-                NumVal() {
+                NumVal(int value) : value(value) {
                     type = values::Type::Number;
                 }
 

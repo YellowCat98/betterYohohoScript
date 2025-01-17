@@ -9,7 +9,7 @@ file(GLOB_RECURSE SOURCES
     src/*.cpp
     src/*.hpp
     src/frontend/*.cpp
-    src/frontend/*.hpp
+    src/runtime/*.cpp
 )
 
 

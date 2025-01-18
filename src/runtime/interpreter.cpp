@@ -11,9 +11,8 @@ values::RuntimeVal* interpreter::evaluate_program(AST::Program* program, Environ
 
     for (auto& stmt : program->body) {
         lastEvaluated = evaluate(stmt, env);
-        //delete stmt;
+        std::cout << "a statement hasb een evaluated" << std::endl;
     }
-    delete program;
     return lastEvaluated;
 }
 
@@ -40,9 +39,9 @@ values::DoubleVal* interpreter::evaluate_numeric_binary_expr(values::RuntimeVal*
     if (op == "/") result = lhsValue / rhsValue; else
     if (op == "%") result = static_cast<int>(lhsValue) % static_cast<int>(rhsValue);
 
-    //std::cout << "lhs: " << lhsValue << std::endl;
-    //std::cout << "rhs: " << rhsValue << std::endl;
-    //std::cout << "result: " << result << std::endl;
+    std::cout << "lhs: " << lhsValue << std::endl;
+    std::cout << "rhs: " << rhsValue << std::endl;
+    std::cout << "result: " << result << std::endl;
 
     return new values::DoubleVal(result);
 }
@@ -61,7 +60,9 @@ values::RuntimeVal* interpreter::evaluate_binary_expr(AST::BinaryExpr* binEx, En
             (lhs->type == values::Type::Double && rhs->type == values::Type::Number) )
     ) throw std::runtime_error("lhs or rhs is not of type NumVal or DoubleVal.");
 
-    return evaluate_numeric_binary_expr(lhs, rhs, binEx->op);
+    auto value = evaluate_numeric_binary_expr(lhs, rhs, binEx->op);
+    std::cout << "CALCULATED VALUE..." << std::endl;
+    return value;
 }
 
 values::RuntimeVal* interpreter::evaluate_identifier(AST::Identifier* ident, Environment* env) {

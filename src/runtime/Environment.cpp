@@ -1,5 +1,6 @@
 #include <yhs/runtime/Environment.hpp>
 #include <stdexcept>
+#include <numbers>
 
 using namespace yhs::runtime;
 
@@ -49,5 +50,6 @@ Environment* Environment::setupEnv() {
 
     env->declareVar("true", new values::BoolVal(true), true);
     env->declareVar("false", new values::BoolVal(false), true);
+    env->declareVar("PI", new values::DoubleVal(3.14159265358979323846), true);
     return env;
 }

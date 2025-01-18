@@ -79,8 +79,36 @@ AST::Expr* Parser::parseExpr() {
     return parseAdditiveExpr();
 }
 
+AST::Stmt* Parser::parseVarDeclaration() {
+    bool constant = eat().type == Lexer::TokenType::Const;
+    std::string identifier = expect(Lexer::TokenType::Identifier, "Expected Identifier following variable declaration keyword.").value;
+
+    if (at().type == Lexer::TokenType::Semicolon) {
+        eat();
+        if (constant) {
+            throw std::runtime_error("Must assign value to constant variable.");
+        }
+
+        return new AST::VarDeclaration(false, identifier, {});
+    }
+
+    expect(Lexer::TokenType::Equals, "Expected equals sign after identifier in variable declaration.");
+
+    auto declaration = new AST::VarDeclaration(constant, identifier, parseExpr());
+}
+
 AST::Stmt* Parser::parseStmt() {
-    return parseExpr();
+    switch (at().type) {
+        case Lexer::TokenType::Var: {
+            return parseVarDeclaration();
+        }
+        case Lexer::TokenType::Const: {
+            return parseVarDeclaration();
+        }
+        default: {
+            return parseExpr();
+        }
+    }
 }
 
 AST::Program* Parser::produceAST(const std::string& code) {

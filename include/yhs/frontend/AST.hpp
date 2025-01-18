@@ -15,7 +15,8 @@ namespace yhs {
                 NumericLiteral, // 1
                 DoubleLiteral, // 2
                 Identifier, // 3
-                BinaryExpr // 4
+                BinaryExpr, // 4
+                VarDeclaration // 5
             };
 
             struct Stmt {
@@ -63,6 +64,16 @@ namespace yhs {
                 }
 
                 double value;
+            };
+
+            struct VarDeclaration : public Stmt {
+                VarDeclaration(bool constant, std::string identifier, std::optional<Expr*> value) : constant(constant), identifier(identifier), value(value) {
+                    this->kind = NodeType::VarDeclaration;
+                }
+
+                bool constant;
+                std::string identifier;
+                std::optional<Expr*> value;
             };
 
             struct Program : public Stmt {

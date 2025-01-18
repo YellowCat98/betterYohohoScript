@@ -95,6 +95,10 @@ AST::Stmt* Parser::parseVarDeclaration() {
     expect(Lexer::TokenType::Equals, "Expected equals sign after identifier in variable declaration.");
 
     auto declaration = new AST::VarDeclaration(constant, identifier, parseExpr());
+
+    expect(Lexer::TokenType::Semicolon, "Expceted semicolon after variable declaration.");
+
+    return declaration;
 }
 
 AST::Stmt* Parser::parseStmt() {

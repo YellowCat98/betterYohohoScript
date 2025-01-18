@@ -16,6 +16,7 @@ namespace yhs {
 
             values::RuntimeVal* evaluate_identifier(frontend::AST::Identifier* ident, Environment* env);
             
+            values::RuntimeVal* evaluate_variable_declaration(frontend::AST::VarDeclaration* varDec, Environment* env);
         public:
             interpreter() {}
 

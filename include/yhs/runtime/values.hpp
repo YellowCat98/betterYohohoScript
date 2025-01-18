@@ -46,6 +46,13 @@ namespace yhs {
 
                 bool value;
             };
+
+            struct NullVal : public RuntimeVal {
+                NullVal() {
+                    type = values::Type::Null;
+                }
+                std::nullptr_t value = nullptr;
+            };
         };
     }
 }

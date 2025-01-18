@@ -3,8 +3,8 @@
 #include <deque>
 #include <string>
 #include <variant>
+#include <optional>
 
-#define ALL_AST_NODES Stmt, Expr, BinaryExpr, Identifier, NumericLiteral
 
 namespace yhs {
     namespace frontend {

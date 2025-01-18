@@ -63,6 +63,12 @@ values::RuntimeVal* interpreter::evaluate_identifier(AST::Identifier* ident, Env
     return env->lookupVar(ident->symbol);
 }
 
+values::RuntimeVal* interpreter::evaluate_variable_declaration(AST::VarDeclaration* varDec, Environment* env) {
+    auto value = varDec->value.has_value() ? evaluate(varDec->value.value(), env) : new values::NullVal();
+
+    return env->declareVar(varDec->identifier, value, varDec->constant);
+}
+
 values::RuntimeVal* interpreter::evaluate(AST::Stmt* stmt, Environment* env) {
     switch (stmt->kind) {
         case AST::NodeType::NumericLiteral: {
@@ -79,6 +85,9 @@ values::RuntimeVal* interpreter::evaluate(AST::Stmt* stmt, Environment* env) {
         }
         case AST::NodeType::Identifier: {
             return evaluate_identifier(static_cast<AST::Identifier*>(stmt), env);
+        }
+        case AST::NodeType::VarDeclaration: {
+            return evaluate_variable_declaration(static_cast<AST::VarDeclaration*>(stmt), env);
         }
         default: {
             return new values::RuntimeVal();

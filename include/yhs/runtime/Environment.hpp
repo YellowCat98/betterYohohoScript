@@ -4,6 +4,7 @@
 #include <string>
 #include <unordered_map>
 #include <unordered_set>
+#include <iostream>
 
 namespace yhs {
     namespace runtime {
@@ -18,12 +19,15 @@ namespace yhs {
                 bool global = this->parent ? true : false;
             }
             ~Environment() {
-                for (auto& var : this->variables) {
-                    delete var.second;
+                for (auto it = this->variables.begin(); it != this->variables.end();) {
+                    if (it->second) {
+                        delete it->second;
+                        it = this->variables.erase(it); // Safely erase the element after deletion
+                    } else {
+                        ++it;
+                    }
                 }
-                if (parent) {
-                    delete parent;
-                }
+                constants.clear();
             }
 
             values::RuntimeVal* declareVar(const std::string& name, values::RuntimeVal* value, bool constant);

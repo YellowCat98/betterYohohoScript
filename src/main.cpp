@@ -41,16 +41,16 @@ int main() {
 
     auto result = i.evaluate(parser.produceAST(R"(
 var x = 5;
-var y = x + 0.00000001;
+var y = x + 2;
 y
 )"), env);
     if (result->type == values::Type::Double) {
         std::cout << "Returned value: " << static_cast<values::DoubleVal*>(result)->value << std::endl;
-    } 
-    delete result;
-    //delete env;
+    }
+    delete env;
     } catch (const std::runtime_error& e) {
             std::cout << e.what() << std::endl;
-        }
+    }
+    
     return 0;
 }

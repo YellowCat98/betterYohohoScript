@@ -19,7 +19,11 @@ namespace yhs {
             Var, // 7
             Const, // 8
             Semicolon, // 9
-            EOF_ // 10
+            OpenBrace, // 10
+            CloseBrace, // 11
+            Colon, // 12
+            Comma, // 13
+            EOF_ // 14
         };
 
 

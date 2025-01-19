@@ -70,7 +70,7 @@ AST::Expr* Parser::parsePrimaryExpr() {
             return value;
         }
         default: {
-            throw std::runtime_error("Unexpected token found during parsing.");
+            throw std::runtime_error("Unexpected token found during parsing: '" + at().value + "'");
         }
     }
 }
@@ -80,7 +80,7 @@ AST::Expr* Parser::parseExpr() {
 }
 
 AST::Expr* Parser::parseAssignmentExpr() {
-    auto left = parseAdditiveExpr();
+    auto left = parseObjectExpr();
 
     if (at().type == Lexer::TokenType::Equals) {
         eat();
@@ -111,6 +111,31 @@ AST::Stmt* Parser::parseVarDeclaration() {
     expect(Lexer::TokenType::Semicolon, "Expceted semicolon after variable declaration.");
 
     return declaration;
+}
+
+AST::Expr* Parser::parseObjectExpr() {
+    if (at().type != Lexer::TokenType::OpenBrace) {
+        return parseAdditiveExpr();
+    }
+
+    eat();
+    std::vector<AST::Property*> properties = {};
+
+    while (notEOF() && at().type != Lexer::TokenType::CloseBrace) {
+        auto key = expect(Lexer::TokenType::Identifier, "Object literal key expected.").value;
+
+        expect(Lexer::TokenType::Colon, "Expected colon following identifier in object expression.");
+
+        auto value = parseExpr();
+
+        properties.push_back(new AST::Property(key, value));
+        if (at().type != Lexer::TokenType::CloseBrace) {
+            expect(Lexer::TokenType::Comma, "Expected comma or closing brace following property.");
+        }
+    }
+
+    expect(Lexer::TokenType::CloseBrace, "Object literal missing closing brace.");
+    return new AST::ObjectLiteral(properties);
 }
 
 AST::Stmt* Parser::parseStmt() {

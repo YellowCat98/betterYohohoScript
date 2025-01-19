@@ -4,6 +4,7 @@
 #include <string>
 #include <variant>
 #include <optional>
+#include <vector>
 
 
 namespace yhs {
@@ -17,7 +18,10 @@ namespace yhs {
                 Identifier, // 3
                 BinaryExpr, // 4
                 VarDeclaration, // 5
-                AssignmentExpr
+                AssignmentExpr, // 6
+                CallExpr, // 7
+                ObjectLiteral, // 8
+                Property // 9
             };
 
             struct Stmt {
@@ -84,6 +88,23 @@ namespace yhs {
 
                 Expr* assigne;
                 Expr* value;
+            };
+
+            struct Property : public Expr {
+                Property(const std::string& key, Expr* value) : key(key), value(value) {
+                    this->kind = NodeType::Property;
+                }
+
+                std::string key;
+                Expr* value;
+            };
+
+            struct ObjectLiteral : public Expr {
+                ObjectLiteral(std::vector<Property*> properties) : properties(properties) {
+                    this->kind = NodeType::ObjectLiteral;
+                }
+
+                std::vector<Property*> properties;
             };
 
             struct Program : public Stmt {

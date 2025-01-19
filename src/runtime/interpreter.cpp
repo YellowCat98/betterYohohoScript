@@ -78,6 +78,15 @@ values::RuntimeVal* interpreter::evaluate_assignment_expression(AST::AssignmentE
     return env->assignVar(name, evaluate(assignment->value, env));
 }
 
+values::RuntimeVal* interpreter::evaluate_object_expr(AST::ObjectLiteral* object, Environment* env) {
+    std::unordered_map<std::string, values::RuntimeVal*> properties;
+    for (auto& property : object->properties) {
+        properties.insert({property->key, evaluate(property->value, env)});
+    }
+
+    return new values::ObjectVal(properties);
+}
+
 values::RuntimeVal* interpreter::evaluate(AST::Stmt* stmt, Environment* env) {
     switch (stmt->kind) {
         case AST::NodeType::NumericLiteral: {
@@ -100,6 +109,9 @@ values::RuntimeVal* interpreter::evaluate(AST::Stmt* stmt, Environment* env) {
         }
         case AST::NodeType::AssignmentExpr: {
             return evaluate_assignment_expression(static_cast<AST::AssignmentExpr*>(stmt), env);
+        }
+        case AST::NodeType::ObjectLiteral: {
+            return evaluate_object_expr(static_cast<AST::ObjectLiteral*>(stmt), env);
         }
         default: {
             delete stmt;

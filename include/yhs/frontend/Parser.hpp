@@ -24,6 +24,7 @@ namespace yhs {
             AST::Expr* parsePrimaryExpr();
             AST::Stmt* parseVarDeclaration();
             AST::Expr* parseAssignmentExpr();
+            AST::Expr* parseObjectExpr();
         public:
             AST::Program* produceAST(const std::string& code);
 

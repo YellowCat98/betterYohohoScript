@@ -33,25 +33,16 @@ int main() {
 
     auto env = Environment::setupEnv();
 
-    //auto tokens = yhs::frontend::Lexer().tokenize("var x = 2.1 + PI");
+    //auto tokens = yhs::frontend::Lexer().tokenize("var x = {x: 5}");
     //for (auto& token : tokens) {
     //    std::cout << "Token type: " << static_cast<int>(token.type) << std::endl;
     //    std::cout << "Token Value: " << token.value << std::endl << std::endl;
     //}
 
     auto result = i.evaluate(parser.produceAST(R"(
-// wait do comments work
-/*
-okay assuming comments do work
-this code here creates avariable named x
-then it assigns variable x to x plus 1 and two 0.2s
-then it evaluates x. awesome, right?
-*/
-
-var x = 5.2;
-
-x = x + 1.2
-x
+var object = {
+    x: 5
+};
 )"), env);
     if (result->type == values::Type::Double) {
         std::cout << "Returned value: " << static_cast<values::DoubleVal*>(result)->value << std::endl;

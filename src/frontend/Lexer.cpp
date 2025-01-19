@@ -47,6 +47,18 @@ std::deque<Lexer::Token> Lexer::tokenize(const std::string& source) {
 		} else if (src[0] == ")") {
 			tokens.push_back(Token(src.front(), TokenType::CloseParen));
 			src.pop_front();
+		} else if (src[0] == "{") {
+			tokens.push_back(Token(src.front(), TokenType::OpenBrace));
+			src.pop_front();
+		} else if (src[0] == "}") {
+			tokens.push_back(Token(src.front(), TokenType::CloseBrace));
+			src.pop_front();
+		} else if (src[0] == ":") {
+			tokens.push_back(Token(src.front(), TokenType::Colon));
+			src.pop_front();
+		} else if (src[0] == ",") {
+			tokens.push_back(Token(src.front(), TokenType::Comma));
+			src.pop_front();
 		}
 
 		else if (src[0] == "+" || src[0] == "-" || src[0] == "*" || src[0] == "/" || src[0] == "%") {

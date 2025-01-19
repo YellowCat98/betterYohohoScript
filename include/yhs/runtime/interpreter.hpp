@@ -19,6 +19,8 @@ namespace yhs {
             values::RuntimeVal* evaluate_variable_declaration(frontend::AST::VarDeclaration* varDec, Environment* env);
 
             values::RuntimeVal* evaluate_assignment_expression(frontend::AST::AssignmentExpr* assignment, Environment* env);
+
+            values::RuntimeVal* evaluate_object_expr(frontend::AST::ObjectLiteral* object, Environment* env);
         public:
             interpreter() {}
 

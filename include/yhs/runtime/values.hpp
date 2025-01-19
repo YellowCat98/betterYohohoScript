@@ -1,6 +1,7 @@
 #pragma once
 
-#include <variant>
+#include <unordered_map>
+#include <string>
 
 namespace yhs {
     namespace runtime {
@@ -12,7 +13,8 @@ namespace yhs {
                 Number, // 0
                 Double, // 1
                 Bool, // 2
-                Null // 3
+                Object, // 3
+                Null // 4
             };
 
             struct RuntimeVal {
@@ -45,6 +47,14 @@ namespace yhs {
                 }
 
                 bool value;
+            };
+
+            struct ObjectVal : public RuntimeVal {
+                ObjectVal(std::unordered_map<std::string, RuntimeVal*> properties)  : properties(properties) {
+                    type = values::Type::Object;
+                }
+
+                std::unordered_map<std::string, RuntimeVal*> properties;
             };
 
             struct NullVal : public RuntimeVal {

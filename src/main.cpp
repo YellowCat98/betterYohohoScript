@@ -41,8 +41,12 @@ int main() {
 
     auto result = i.evaluate(parser.produceAST(R"(
 var object = {
-    x: 5
+    x: 5,
+    y: 2,
+    z: 2
 };
+
+// object[complex][x] + object[x]
 )"), env);
     if (result->type == values::Type::Double) {
         std::cout << "Returned value: " << static_cast<values::DoubleVal*>(result)->value << std::endl;

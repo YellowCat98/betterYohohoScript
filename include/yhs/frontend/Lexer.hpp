@@ -21,9 +21,11 @@ namespace yhs {
             Semicolon, // 9
             OpenBrace, // 10
             CloseBrace, // 11
-            Colon, // 12
-            Comma, // 13
-            EOF_ // 14
+            OpenBrack, // 12
+            CloseBrack, // 13
+            Colon, // 14
+            Comma, // 15
+            EOF_ // 16
         };
 
 

@@ -81,6 +81,10 @@ values::RuntimeVal* interpreter::evaluate_assignment_expression(AST::AssignmentE
 values::RuntimeVal* interpreter::evaluate_object_expr(AST::ObjectLiteral* object, Environment* env) {
     std::unordered_map<std::string, values::RuntimeVal*> properties;
     for (auto& property : object->properties) {
+        if (properties.find(property->key) != properties.end()) {
+            throw std::runtime_error("Property with the same key already exists: " + property->key);
+        }
+
         properties.insert({property->key, evaluate(property->value, env)});
     }
 

@@ -4,6 +4,7 @@
 #include <yhs/Result.hpp>
 #include <yhs/frontend/Lexer.hpp>
 #include <iostream>
+#include <vector>
 
 namespace yhs {
     namespace frontend {
@@ -25,6 +26,11 @@ namespace yhs {
             AST::Stmt* parseVarDeclaration();
             AST::Expr* parseAssignmentExpr();
             AST::Expr* parseObjectExpr();
+            AST::Expr* parseMemberExpr();
+            AST::Expr* parseMemberCallExpr();
+            AST::Expr* parseCallExpr(AST::Expr* caller);
+            std::vector<AST::Expr*> parseArgumentsList();
+            std::vector<AST::Expr*> parseArgs();
         public:
             AST::Program* produceAST(const std::string& code);
 

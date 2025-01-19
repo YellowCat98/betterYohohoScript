@@ -46,7 +46,7 @@ var object = {
     z: 2
 };
 
-// object[complex][x] + object[x]
+object[complex][x] + object[x]
 )"), env);
     if (result->type == values::Type::Double) {
         std::cout << "Returned value: " << static_cast<values::DoubleVal*>(result)->value << std::endl;

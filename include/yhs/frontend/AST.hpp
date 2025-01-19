@@ -20,8 +20,9 @@ namespace yhs {
                 VarDeclaration, // 5
                 AssignmentExpr, // 6
                 CallExpr, // 7
-                ObjectLiteral, // 8
-                Property // 9
+                MemberExpr, // 8
+                ObjectLiteral, // 9
+                Property // 10
             };
 
             struct Stmt {
@@ -105,6 +106,22 @@ namespace yhs {
                 }
 
                 std::vector<Property*> properties;
+            };
+
+            struct MemberExpr : public Expr {
+                MemberExpr(Expr* object, Expr* property) : object(object), property(property) {
+                    this->kind = NodeType::MemberExpr;
+                }
+                Expr* object;
+                Expr* property;
+            };
+
+            struct CallExpr : public Expr {
+                CallExpr(std::vector<Expr*> args, Expr* caller) : args(args), caller(caller) {
+                    this->kind = NodeType::CallExpr;
+                }
+                std::vector<Expr*> args;
+                Expr* caller;
             };
 
             struct Program : public Stmt {

@@ -39,11 +39,11 @@ AST::Expr* Parser::parseAdditiveExpr() {
 }
 
 AST::Expr* Parser::parseMultiplicitaveExpr() {
-    auto left = parsePrimaryExpr();
+    auto left = parseMemberCallExpr();
 
     while (at().value == "/" || at().value == "*" || at().value == "%") {
         auto op = eat().value;
-        auto right = parsePrimaryExpr();
+        auto right = parseMemberCallExpr();
         left = new AST::BinaryExpr(left, right, op);
     }
 
@@ -77,6 +77,16 @@ AST::Expr* Parser::parsePrimaryExpr() {
 
 AST::Expr* Parser::parseExpr() {
     return parseAssignmentExpr();
+}
+
+AST::Expr* Parser::parseMemberCallExpr() {
+    auto member = parseMemberExpr();
+
+    if (at().type == Lexer::TokenType::OpenParen) {
+        return parseCallExpr(member);
+    }
+
+    return member;
 }
 
 AST::Expr* Parser::parseAssignmentExpr() {
@@ -136,6 +146,54 @@ AST::Expr* Parser::parseObjectExpr() {
 
     expect(Lexer::TokenType::CloseBrace, "Object literal missing closing brace.");
     return new AST::ObjectLiteral(properties);
+}
+
+AST::Expr* Parser::parseCallExpr(AST::Expr* caller) {
+    AST::Expr* callExpr = new AST::CallExpr(parseArgs(), caller);
+
+    if (at().type == Lexer::TokenType::OpenParen) {
+        callExpr = parseCallExpr(callExpr);
+    }
+
+    return callExpr;
+}
+
+AST::Expr* Parser::parseMemberExpr() {
+    AST::Expr* object = parsePrimaryExpr();
+
+    while (at().type == Lexer::TokenType::OpenBrack) {
+        eat();
+        auto property = parseExpr();
+        expect(Lexer::TokenType::CloseBrack, "Expected closing bracket.");
+
+        object = new AST::MemberExpr(object, property);
+    }
+
+    return object;
+}
+
+std::vector<AST::Expr*> Parser::parseArgs() {
+    expect(Lexer::TokenType::OpenParen, "Expected opening parenthesis.");
+
+    auto args = parseArgumentsList();
+
+    expect(Lexer::TokenType::CloseParen, "Expected closing parenthesis in arguments list.");
+    return args;
+}
+
+std::vector<AST::Expr*> Parser::parseArgumentsList() {
+    std::vector<AST::Expr*> args = {};
+    while (notEOF() && at().type != Lexer::TokenType::CloseParen) {
+        args.push_back(parseExpr());
+
+        if (at().type == Lexer::TokenType::Comma) {
+            eat();
+        } else if (at().type != Lexer::TokenType::CloseParen) {
+            throw std::runtime_error("Expected comma or closing parenthesis.");
+        }
+    }
+
+    return args;
 }
 
 AST::Stmt* Parser::parseStmt() {

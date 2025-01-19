@@ -53,6 +53,12 @@ std::deque<Lexer::Token> Lexer::tokenize(const std::string& source) {
 		} else if (src[0] == "}") {
 			tokens.push_back(Token(src.front(), TokenType::CloseBrace));
 			src.pop_front();
+		} else if (src[0] == "[") {
+			tokens.push_back(Token(src.front(), TokenType::OpenBrack));
+			src.pop_front();
+		} else if (src[0] == "]") {
+			tokens.push_back(Token(src.front(), TokenType::CloseBrack));
+			src.pop_front();
 		} else if (src[0] == ":") {
 			tokens.push_back(Token(src.front(), TokenType::Colon));
 			src.pop_front();
@@ -101,7 +107,7 @@ std::deque<Lexer::Token> Lexer::tokenize(const std::string& source) {
 			} else if (src[0] == "" || src[0] == " " || src[0] == "\n" || src[0] == "\r" || src[0] == "\t") {
 				src.pop_front();
 			} else {
-				throw std::runtime_error("Unrecognized token found.");
+				throw std::runtime_error("Unrecognized token found: '" + src[0] + "'");
 			}
 		}
 	}

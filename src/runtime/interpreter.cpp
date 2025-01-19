@@ -91,6 +91,25 @@ values::RuntimeVal* interpreter::evaluate_object_expr(AST::ObjectLiteral* object
     return new values::ObjectVal(properties);
 }
 
+values::RuntimeVal* interpreter::evaluate_member_expr(AST::MemberExpr* memberExpr, Environment* env) {
+    auto object_ = evaluate(memberExpr->object, env);
+    
+    auto name = static_cast<AST::Identifier*>(memberExpr->property)->symbol;
+
+    if (object_->type == values::Type::Object) {
+        auto object = static_cast<values::ObjectVal*>(object_);
+
+        auto it = object->properties.find(name);
+        if (it != object->properties.end()) {
+            return it->second;
+        } else {
+            throw std::runtime_error("Property " + it->first + " Does not exist in object.");
+        }
+    }
+
+    throw std::runtime_error("Attempted to access a property on a non-object type.");
+}
+
 values::RuntimeVal* interpreter::evaluate(AST::Stmt* stmt, Environment* env) {
     switch (stmt->kind) {
         case AST::NodeType::NumericLiteral: {
@@ -116,6 +135,9 @@ values::RuntimeVal* interpreter::evaluate(AST::Stmt* stmt, Environment* env) {
         }
         case AST::NodeType::ObjectLiteral: {
             return evaluate_object_expr(static_cast<AST::ObjectLiteral*>(stmt), env);
+        }
+        case AST::NodeType::MemberExpr: {
+            return evaluate_member_expr(static_cast<AST::MemberExpr*>(stmt), env);
         }
         default: {
             delete stmt;

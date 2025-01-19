@@ -164,6 +164,11 @@ AST::Expr* Parser::parseMemberExpr() {
     while (at().type == Lexer::TokenType::OpenBrack) {
         eat();
         auto property = parseExpr();
+        if (property->kind != AST::NodeType::Identifier) {
+            delete property;
+            delete object;
+            throw std::runtime_error("Expected property to be an identifier.");
+        }
         expect(Lexer::TokenType::CloseBrack, "Expected closing bracket.");
 
         object = new AST::MemberExpr(object, property);

@@ -21,6 +21,8 @@ namespace yhs {
             values::RuntimeVal* evaluate_assignment_expression(frontend::AST::AssignmentExpr* assignment, Environment* env);
 
             values::RuntimeVal* evaluate_object_expr(frontend::AST::ObjectLiteral* object, Environment* env);
+
+            values::RuntimeVal* evaluate_member_expr(frontend::AST::MemberExpr* member, Environment* env);
         public:
             interpreter() {}
 

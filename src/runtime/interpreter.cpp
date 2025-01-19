@@ -69,6 +69,15 @@ values::RuntimeVal* interpreter::evaluate_variable_declaration(AST::VarDeclarati
     return env->declareVar(varDec->identifier, value, varDec->constant);
 }
 
+values::RuntimeVal* interpreter::evaluate_assignment_expression(AST::AssignmentExpr* assignment, Environment* env) {
+    if (assignment->assigne->kind != AST::NodeType::Identifier) {
+        throw std::runtime_error("Expected an identifier for assigne in assignment expression.");
+    }
+
+    auto name = static_cast<AST::Identifier*>(assignment->assigne)->symbol;
+    return env->assignVar(name, evaluate(assignment->value, env));
+}
+
 values::RuntimeVal* interpreter::evaluate(AST::Stmt* stmt, Environment* env) {
     switch (stmt->kind) {
         case AST::NodeType::NumericLiteral: {
@@ -88,6 +97,9 @@ values::RuntimeVal* interpreter::evaluate(AST::Stmt* stmt, Environment* env) {
         }
         case AST::NodeType::VarDeclaration: {
             return evaluate_variable_declaration(static_cast<AST::VarDeclaration*>(stmt), env);
+        }
+        case AST::NodeType::AssignmentExpr: {
+            return evaluate_assignment_expression(static_cast<AST::AssignmentExpr*>(stmt), env);
         }
         default: {
             delete stmt;

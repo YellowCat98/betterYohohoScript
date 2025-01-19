@@ -41,7 +41,7 @@ int main() {
 
     auto result = i.evaluate(parser.produceAST(R"(
 var x = 5.2;
-x = 1.2
+x = x + 1.2
 x
 )"), env);
     if (result->type == values::Type::Double) {

@@ -40,7 +40,16 @@ int main() {
     //}
 
     auto result = i.evaluate(parser.produceAST(R"(
+// wait do comments work
+/*
+okay assuming comments do work
+this code here creates avariable named x
+then it assigns variable x to x plus 1 and two 0.2s
+then it evaluates x. awesome, right?
+*/
+
 var x = 5.2;
+
 x = x + 1.2
 x
 )"), env);

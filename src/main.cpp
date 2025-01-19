@@ -40,9 +40,9 @@ int main() {
     //}
 
     auto result = i.evaluate(parser.produceAST(R"(
-var x = 5;
-var y = x + 2;
-y
+var x = 5.2;
+x = 1.2
+x
 )"), env);
     if (result->type == values::Type::Double) {
         std::cout << "Returned value: " << static_cast<values::DoubleVal*>(result)->value << std::endl;

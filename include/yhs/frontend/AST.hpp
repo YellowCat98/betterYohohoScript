@@ -16,7 +16,8 @@ namespace yhs {
                 DoubleLiteral, // 2
                 Identifier, // 3
                 BinaryExpr, // 4
-                VarDeclaration // 5
+                VarDeclaration, // 5
+                AssignmentExpr
             };
 
             struct Stmt {
@@ -74,6 +75,15 @@ namespace yhs {
                 bool constant;
                 std::string identifier;
                 std::optional<Expr*> value;
+            };
+
+            struct AssignmentExpr: public Expr {
+                AssignmentExpr(Expr* assigne, Expr* value) : assigne(assigne), value(value) {
+                    this->kind = NodeType::AssignmentExpr;
+                }
+
+                Expr* assigne;
+                Expr* value;
             };
 
             struct Program : public Stmt {

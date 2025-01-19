@@ -90,7 +90,8 @@ values::RuntimeVal* interpreter::evaluate(AST::Stmt* stmt, Environment* env) {
             return evaluate_variable_declaration(static_cast<AST::VarDeclaration*>(stmt), env);
         }
         default: {
-            return new values::RuntimeVal();
+            delete stmt;
+            throw std::runtime_error("This interpreter was not setup to interpret this program.");
         }
     }
 }

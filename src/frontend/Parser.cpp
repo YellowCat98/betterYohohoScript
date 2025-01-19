@@ -76,7 +76,19 @@ AST::Expr* Parser::parsePrimaryExpr() {
 }
 
 AST::Expr* Parser::parseExpr() {
-    return parseAdditiveExpr();
+    return parseAssignmentExpr();
+}
+
+AST::Expr* Parser::parseAssignmentExpr() {
+    auto left = parseAdditiveExpr();
+
+    if (at().type == Lexer::TokenType::Equals) {
+        eat();
+        auto value = parseAssignmentExpr();
+        return new AST::AssignmentExpr(left, value);
+    }
+
+    return left;
 }
 
 AST::Stmt* Parser::parseVarDeclaration() {

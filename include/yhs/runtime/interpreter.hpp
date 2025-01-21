@@ -23,6 +23,8 @@ namespace yhs {
             values::RuntimeVal* evaluate_object_expr(frontend::AST::ObjectLiteral* object, Environment* env);
 
             values::RuntimeVal* evaluate_member_expr(frontend::AST::MemberExpr* member, Environment* env);
+
+            values::RuntimeVal* evaluate_call_expr(frontend::AST::CallExpr* call, Environment* env);
         public:
             interpreter() {}
 

@@ -45,17 +45,14 @@ var object = {
     y: 2,
     z: 2,
     complex: {
-        x: 2
+        x: 2,
+        y: print
     }
 };
 
-object[complex][x]
+object[complex][y](object[x] + object[complex][x])
+
 )"), env);
-    if (result->type == values::Type::Double) {
-        std::cout << "Returned value: " << static_cast<values::DoubleVal*>(result)->value << std::endl;
-    } else if (result->type == values::Type::Number) {
-        std::cout << "Returned value: " << static_cast<values::NumVal*>(result)->value << std::endl;
-    }
     delete env;
     } catch (const std::runtime_error& e) {
             std::cout << e.what() << std::endl;

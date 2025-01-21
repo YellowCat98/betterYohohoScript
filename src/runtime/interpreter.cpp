@@ -45,8 +45,6 @@ values::RuntimeVal* interpreter::evaluate_binary_expr(AST::BinaryExpr* binEx, En
     auto lhs = evaluate(binEx->left, env);
     auto rhs = evaluate(binEx->right, env);
 
-    delete binEx->left;
-    delete binEx->right;
     
     if (
         !( (lhs->type == values::Type::Number && rhs->type == values::Type::Number) ||
@@ -110,6 +108,21 @@ values::RuntimeVal* interpreter::evaluate_member_expr(AST::MemberExpr* memberExp
     throw std::runtime_error("Attempted to access a property on a non-object type.");
 }
 
+values::RuntimeVal* interpreter::evaluate_call_expr(AST::CallExpr* call, Environment* env) {
+    std::vector<values::RuntimeVal*> args = {};
+    for (auto& arg : call->args) {
+        args.push_back(evaluate(arg, env));
+    }
+
+    auto fn = evaluate(call->caller, env);
+    if (fn->type != values::Type::NativeFun) {
+        delete fn;
+        throw std::runtime_error("Cannot call value that is not a function.");
+    }
+
+    return static_cast<values::NativeFunVal*>(fn)->call(args, env);
+}
+
 values::RuntimeVal* interpreter::evaluate(AST::Stmt* stmt, Environment* env) {
     switch (stmt->kind) {
         case AST::NodeType::NumericLiteral: {
@@ -138,6 +151,9 @@ values::RuntimeVal* interpreter::evaluate(AST::Stmt* stmt, Environment* env) {
         }
         case AST::NodeType::MemberExpr: {
             return evaluate_member_expr(static_cast<AST::MemberExpr*>(stmt), env);
+        }
+        case AST::NodeType::CallExpr: {
+            return evaluate_call_expr(static_cast<AST::CallExpr*>(stmt), env);
         }
         default: {
             delete stmt;

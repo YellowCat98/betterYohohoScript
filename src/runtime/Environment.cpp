@@ -51,5 +51,19 @@ Environment* Environment::setupEnv() {
     env->declareVar("true", new values::BoolVal(true), true);
     env->declareVar("false", new values::BoolVal(false), true);
     env->declareVar("PI", new values::DoubleVal(3.14159265358979323846), true);
+
+    env->declareVar("print", new values::NativeFunVal([](std::vector<values::RuntimeVal*> args, Environment* env) -> values::RuntimeVal* {
+        for (auto& arg : args) {
+            if (arg->type == values::Type::Double) {
+                std::cout << static_cast<values::DoubleVal*>(arg)->value << std::endl;
+            } else if (arg->type == values::Type::Number) {
+                std::cout << static_cast<values::NumVal*>(arg)->value << std::endl;
+            } else {
+                delete arg;
+                throw std::runtime_error("Cannot call native function print on a value that is not a number or a double.");
+            }
+        }
+        return new values::NullVal();
+    }), true);
     return env;
 }

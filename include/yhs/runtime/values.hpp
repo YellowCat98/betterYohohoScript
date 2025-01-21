@@ -2,6 +2,8 @@
 
 #include <unordered_map>
 #include <string>
+#include <vector>
+#include <functional>
 
 namespace yhs {
     namespace runtime {
@@ -14,7 +16,8 @@ namespace yhs {
                 Double, // 1
                 Bool, // 2
                 Object, // 3
-                Null // 4
+                NativeFun, // 4
+                Null // 5
             };
 
             struct RuntimeVal {
@@ -62,6 +65,15 @@ namespace yhs {
                     type = values::Type::Null;
                 }
                 std::nullptr_t value = nullptr;
+            };
+
+            using Func = std::function<RuntimeVal*(std::vector<RuntimeVal*>, Environment*)>;
+            struct NativeFunVal : public RuntimeVal {
+                NativeFunVal(Func call) : call(call) {
+                    type = Type::NativeFun;
+                }
+
+                Func call;
             };
         };
     }

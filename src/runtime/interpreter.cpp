@@ -123,6 +123,10 @@ values::RuntimeVal* interpreter::evaluate_call_expr(AST::CallExpr* call, Environ
     return static_cast<values::NativeFunVal*>(fn)->call(args, env);
 }
 
+values::RuntimeVal* interpreter::evaluate_fun_declaration(AST::FunDeclaration* fun, Environment* env) {
+    return env->declareVar(fun->name, new values::FunValue(fun->name, fun->parameters, env, fun->body), true);
+}
+
 values::RuntimeVal* interpreter::evaluate(AST::Stmt* stmt, Environment* env) {
     switch (stmt->kind) {
         case AST::NodeType::NumericLiteral: {
@@ -155,9 +159,12 @@ values::RuntimeVal* interpreter::evaluate(AST::Stmt* stmt, Environment* env) {
         case AST::NodeType::CallExpr: {
             return evaluate_call_expr(static_cast<AST::CallExpr*>(stmt), env);
         }
+        case AST::NodeType::FunDeclaration: {
+            return evaluate_fun_declaration(static_cast<AST::FunDeclaration*>(stmt), env);
+        }
         default: {
             delete stmt;
-            throw std::runtime_error("This interpreter was not setup to interpret this program.");
+            throw std::runtime_error("This interpreter was not yet setup to interpret this program."); // you'd rarely encounter this error because all ast nodes are evalauted here! (probably)
         }
     }
 }

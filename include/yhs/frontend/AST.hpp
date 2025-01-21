@@ -22,7 +22,8 @@ namespace yhs {
                 CallExpr, // 7
                 MemberExpr, // 8
                 ObjectLiteral, // 9
-                Property // 10
+                Property, // 10
+                FunDeclaration, // 11
             };
 
             struct Stmt {
@@ -122,6 +123,16 @@ namespace yhs {
                 }
                 std::vector<Expr*> args;
                 Expr* caller;
+            };
+
+            struct FunDeclaration : public Stmt {
+                FunDeclaration(std::vector<std::string> parameters, const std::string& name, std::vector<Stmt*> body) : parameters(parameters), name(name), body(body) {
+                    this->kind = NodeType::FunDeclaration;
+                }
+
+                std::vector<std::string> parameters;
+                std::string name;
+                std::vector<Stmt*> body;
             };
 
             struct Program : public Stmt {

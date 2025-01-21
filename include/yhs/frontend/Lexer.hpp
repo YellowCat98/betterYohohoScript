@@ -18,14 +18,15 @@ namespace yhs {
             Double, // 6
             Var, // 7
             Const, // 8
-            Semicolon, // 9
-            OpenBrace, // 10
-            CloseBrace, // 11
-            OpenBrack, // 12
-            CloseBrack, // 13
-            Colon, // 14
-            Comma, // 15
-            EOF_ // 16
+            Fun, // 9
+            Semicolon, // 10
+            OpenBrace, // 11
+            CloseBrace, // 12
+            OpenBrack, // 13
+            CloseBrack, // 14
+            Colon, // 15
+            Comma, // 16
+            EOF_ // 17
         };
 
 
@@ -43,7 +44,8 @@ namespace yhs {
         
         std::unordered_map<std::string, Lexer::TokenType> reserved {
             {"var", Lexer::TokenType::Var},
-            {"const", Lexer::TokenType::Const}
+            {"const", Lexer::TokenType::Const},
+            {"fun", Lexer::TokenType::Fun}
         };
 
         };

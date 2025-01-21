@@ -201,6 +201,35 @@ std::vector<AST::Expr*> Parser::parseArgumentsList() {
     return args;
 }
 
+AST::Stmt* Parser::parseFunDeclaration() {
+    eat();
+
+    auto name = expect(Lexer::TokenType::Identifier, "Expected identifier after function declaration.").value;
+
+    auto args = parseArgs();
+
+    std::vector<std::string> params = {};
+
+    for (auto& arg : args) {
+        if (arg->kind != AST::NodeType::Identifier) {
+            delete arg;
+            throw std::runtime_error("Expected identifier in function declaration arguments.");
+        }
+
+        params.push_back(static_cast<AST::Identifier*>(arg)->symbol);
+    }
+
+    expect(Lexer::TokenType::OpenBrace, "Expected open brace after function declaration");
+
+    std::vector<AST::Stmt*> body = {};
+
+    while (notEOF() && at().type != Lexer::TokenType::CloseBrace) {
+        body.push_back(parseStmt());
+    }
+
+    return new AST::FunDeclaration(params, name, body);
+}
+
 AST::Stmt* Parser::parseStmt() {
     switch (at().type) {
         case Lexer::TokenType::Var: {
@@ -208,6 +237,9 @@ AST::Stmt* Parser::parseStmt() {
         }
         case Lexer::TokenType::Const: {
             return parseVarDeclaration();
+        }
+        case Lexer::TokenType::Fun: {
+            return parseFunDeclaration();
         }
         default: {
             return parseExpr();

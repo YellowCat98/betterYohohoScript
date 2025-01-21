@@ -31,6 +31,7 @@ namespace yhs {
             AST::Expr* parseCallExpr(AST::Expr* caller);
             std::vector<AST::Expr*> parseArgumentsList();
             std::vector<AST::Expr*> parseArgs();
+            AST::Stmt* parseFunDeclaration();
         public:
             AST::Program* produceAST(const std::string& code);
 

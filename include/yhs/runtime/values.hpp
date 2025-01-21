@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include <functional>
+#include <yhs/frontend/AST.hpp>
 
 namespace yhs {
     namespace runtime {
@@ -17,7 +18,8 @@ namespace yhs {
                 Bool, // 2
                 Object, // 3
                 NativeFun, // 4
-                Null // 5
+                Fun, // 5
+                Null // 6
             };
 
             struct RuntimeVal {
@@ -74,6 +76,17 @@ namespace yhs {
                 }
 
                 Func call;
+            };
+
+            struct FunValue : public RuntimeVal {
+                FunValue(const std::string& name, std::vector<std::string> params, Environment* decEnv, std::vector<frontend::AST::Stmt*> body)  : name(name), params(params), decEnv(decEnv), body(body) {
+                    type = Type::Fun;
+                }
+
+                std::string name;
+                std::vector<std::string> params;
+                Environment* decEnv;
+                std::vector<frontend::AST::Stmt*> body;
             };
         };
     }

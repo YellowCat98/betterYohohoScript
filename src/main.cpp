@@ -40,17 +40,22 @@ int main() {
     //}
 
     auto result = i.evaluate(parser.produceAST(R"(
+fun bar(x, y) {
+    {
+        z: x + y
+    }
+}
 var object = {
     x: 5,
     y: 2,
     z: 2,
     complex: {
         x: 2,
-        y: print
+        y: 5
     }
 };
 
-object[complex][y](object[x] + object[complex][x])
+print(bar(object[x], 4)[z])
 
 )"), env);
     delete env;

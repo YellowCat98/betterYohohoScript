@@ -227,6 +227,8 @@ AST::Stmt* Parser::parseFunDeclaration() {
         body.push_back(parseStmt());
     }
 
+    expect(Lexer::TokenType::CloseBrace, "Expected close brace in function declaration");
+
     return new AST::FunDeclaration(params, name, body);
 }
 

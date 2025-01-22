@@ -115,12 +115,27 @@ values::RuntimeVal* interpreter::evaluate_call_expr(AST::CallExpr* call, Environ
     }
 
     auto fn = evaluate(call->caller, env);
-    if (fn->type != values::Type::NativeFun) {
-        delete fn;
-        throw std::runtime_error("Cannot call value that is not a function.");
+    if (fn->type == values::Type::NativeFun) return static_cast<values::NativeFunVal*>(fn)->call(args, env);
+
+    if (fn->type == values::Type::Fun) {
+        auto func = static_cast<values::FunValue*>(fn);
+        auto scope = new Environment(func->decEnv);
+
+        for (int i = 0; i < func->params.size(); ++i) {
+            scope->declareVar(func->params[i], args[i], false);
+        }
+
+        values::RuntimeVal* result = nullptr;
+
+        for (auto& stmt : func->body) {
+            result = evaluate(stmt, scope);
+        }
+
+        return result;
     }
 
-    return static_cast<values::NativeFunVal*>(fn)->call(args, env);
+    delete fn;
+    throw std::runtime_error("Cannot call value that is not a function.");
 }
 
 values::RuntimeVal* interpreter::evaluate_fun_declaration(AST::FunDeclaration* fun, Environment* env) {

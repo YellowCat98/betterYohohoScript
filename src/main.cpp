@@ -41,9 +41,9 @@ int main() {
 
     auto result = i.evaluate(parser.produceAST(R"(
 fun bar(x, y) {
-    {
+    ({
         z: x + y
-    }
+    })[z]
 }
 var object = {
     x: 5,
@@ -55,7 +55,7 @@ var object = {
     }
 };
 
-print(bar(object[x], 4)[z])
+print(bar(5, 2))
 
 )"), env);
     delete env;
